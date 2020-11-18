@@ -1,0 +1,64 @@
+{% extends 'baseProduct.html.twig' %}
+
+{# Global variables #}
+{% set number = 23 %}
+{% set test = 'test' %}
+{% set bool = true %}
+{% set testArray = [1, 2] %}
+{% set testObject = {'test' : 'test'} %}
+
+{# Structuration avec les blocks + réutilisable au besoin #}
+{% block header %}
+    <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+    {{ parent() }}
+    <h1>Templating twig</h1>
+
+    {# Inclure le header qui est dans le dossiers parts de templates #}
+    {% include 'parts/header.html.twig' %}
+    {# Inclure le header en lui passant des variables #}
+    {% include 'parts/header.html.twig' with testObject %}
+
+    {# Les conditions #}
+    {% if bool == true %}
+        <p>Condition Ok</p>
+    {% elseif test == 'test' %}
+        <p>Condition test ok</p>
+    {% elseif not bool %}
+        <p>Condition ok</p>
+    {% elseif number %}
+        <p>Condition ok</p>
+    {% elseif number is not empty %}
+        <p>Condition ok</p>
+    {% elseif number is defined and number > 10 %}
+        <p>Condition ok</p>
+    {% else %}
+        <p>Dans le else</p>
+    {% endif %}
+
+    {# Les boucles #}
+    {% for test in testArray %}
+        <p>{{ test }}</p>
+    {% endfor %}
+
+    {# Twig filters https://twig.symfony.com/doc/3.x/filters/index.html #}
+    <p>{{ test| upper }}</p>
+    <p>{{ test| length }}</p>
+
+    <br>
+    {# Filer en mode block #}
+    <p>
+    {% apply upper %}
+        texte blablabla
+    {% endapply %}
+    </p>
+    <br>
+    {# Path vers les assets #}
+    <img src="{{ asset('assets/list_3.jpg') }}">
+    <br>
+    {#Lien vers une méthode de controller avec paramètes#}
+    <a href="{{ path('product_id', {'id': 10}) }}">Page produit</a>
+
+    {# Insert js #}
+    <script src="{{ asset('js/main.js') }}"></script>
+
+{% endblock %}
